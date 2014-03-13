@@ -1,0 +1,27 @@
+{
+	"name": "node-drone-xbox360",
+	"description": "Control AR.Drones using a Wireless Xbox 360 joystick via XBoxDrv",
+	"keywords": [
+		"AR.Drone",
+		"ar",
+		"drone",
+		"controller",
+		"joystick",
+		"xbox",
+		"xbox360"
+	],
+	"version": "0.1.0",
+	"author": "Matt Carter <m@ttcarter.com>",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/hash-bang/Node-ROFLCOPTER"
+	},
+	"bin": {
+		"roflcopter": "bin/roflcopter"
+	},
+	"dependencies": {
+		"joystick": "~0.1.1",
+		"ar-drone": "~0.3.1",
+		"commander": "~2.1.0"
+	}
+}
