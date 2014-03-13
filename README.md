@@ -15,7 +15,7 @@ This module can use *any* compatible Joystick device but I would highly recommen
 2. `git clone git@github.com:hash-bang/Node-ROFLCOPTER.git`
 3. `cd Node-ROFLCOPTER`
 4. `npm install` - to include all prerequisites
-5. `node ./bin/roflcopter` - to run the damn thing
+5. `node ./bin/roflcopter` or `npm start` - to run the damn thing
 6. Aaaaaaaaaaaaaaaaagggggggggggggggghhhhhhhhhhhhhhhhh
 
 

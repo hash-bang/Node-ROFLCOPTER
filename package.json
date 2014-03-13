@@ -19,6 +19,9 @@
 	"bin": {
 		"roflcopter": "bin/roflcopter"
 	},
+	"scripts": {
+		"start": "node ./bin/roflcopter"
+	},
 	"dependencies": {
 		"joystick": "~0.1.1",
 		"ar-drone": "~0.3.1",
