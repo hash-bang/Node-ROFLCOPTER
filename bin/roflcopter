@@ -1,7 +1,9 @@
 #!/usr/bin/env node
-# ROFLCopter Drone control
-# @author Matt Carter <m@ttcarter.com>
-# @url https://github.com/hash-bang/Node-ROFLCOPTER
+/**
+* ROFLCopter Drone control
+* @author Matt Carter <m@ttcarter.com>
+* @url https://github.com/hash-bang/Node-ROFLCOPTER
+*/
 
 var program = require('commander');
 var arDrone = require('ar-drone');
