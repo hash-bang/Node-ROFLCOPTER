@@ -24,6 +24,7 @@ var client  = arDrone.createClient({
 
 var heightSpeed = 0.4;
 var maxInt = 32768;
+var deadZone = 1000;
 
 var minMax = function(value, min, max) {
 	if (value < min) {
@@ -46,9 +47,13 @@ joystick
 					});
 				}
 				break;
-			case 13: // Reset emergency
+			case 13: // Start button
 				if (data.value) {
 					client.disableEmergency();
+					console.log('Trigger take off');
+					client.takeoff(function() {
+						console.log('Taken off');
+					});
 				}
 			case 14: // Xbox logo
 				if (data.value) {
@@ -102,21 +107,27 @@ joystick
 		switch(data.number) {
 			case 1: // Left up/down
 			case 3: // Right up/down
-				if (data.value < 0) {
+				if (data.value > 0-deadZone && data.value < deadZone) {
+					client.stop();	
+				} else if (data.value < 0) {
 					client.front(minMax(1 - ((0-data.value) / maxInt)), 0, maxInt);
 				} else {
 					client.back(minMax(data.value / maxInt, 0, maxInt));
 				}
 				break;
 			case 0: // Left left/right
-				if (data.value < 0) {
+				if (data.value > 0-deadZone && data.value < deadZone) {
+					client.stop();	
+				} else if (data.value < 0) {
 					client.counterClockwise(minMax(1 - ((0-data.value) / maxInt)), 0, maxInt);
 				} else {
 					client.clockwise(minMax(data.value / maxInt, 0, maxInt));
 				}
 				break;
 			case 2: // Right left/right
-				if (data.value < 0) {
+				if (data.value > 0-deadZone && data.value < deadZone) {
+					client.stop();	
+				} else if (data.value < 0) {
 					client.left(minMax(1 - ((0-data.value) / maxInt)), 0, maxInt);
 				} else {
 					client.right(minMax(data.value / maxInt, 0, maxInt));
