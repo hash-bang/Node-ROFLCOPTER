@@ -20,7 +20,9 @@
 		"roflcopter": "bin/roflcopter"
 	},
 	"scripts": {
-		"start": "node ./bin/roflcopter"
+		"start": "node ./bin/roflcopter",
+		"start-joystick": "sudo rmmod xpad; sudo ./bin/xboxdrv --dpad-as-button --trigger-as-button --deadzone 12000 -s --led 9 -D",
+		"debug-joystick": "node ./bin/joystick-raw.js"
 	},
 	"dependencies": {
 		"joystick": "~0.1.1",
