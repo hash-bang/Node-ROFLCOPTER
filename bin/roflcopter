@@ -7,17 +7,19 @@
 
 var program = require('commander');
 var arDrone = require('ar-drone');
-var client  = arDrone.createClient({
-	ip: '192.168.1.1'
-});
-console.log('ready');
 
 program
 	.version(require('../package').version)
 	.option('-i, --ip [address]', 'IP address or hostname to connect to (default: "192.168.1.1")', '192.168.1.1')
 	.parse(process.argv);
 
+console.log('Attaching joystick...');
 var joystick = new (require('joystick'))(0, 3500, 350);
+
+console.log('Connecting to drone [' + program.ip + ']');
+var client  = arDrone.createClient({
+	ip: program.ip
+});
 
 
 var heightSpeed = 0.4;

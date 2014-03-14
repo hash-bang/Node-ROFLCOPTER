@@ -22,7 +22,6 @@ This module can use *any* compatible Joystick device but I would highly recommen
 
 TODO
 ====
-* Actually accept and do something with command line arguments
 * Add fixed rotation guides
 * Move rotation controls to D-Pad and fix both joysticks to strafe movement
 * Make 'takeoff' controls also retrigger emergency reset
