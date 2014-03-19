@@ -1,5 +1,5 @@
 {
-	"name": "node-drone-xbox360",
+	"name": "node-roflcopter",
 	"description": "Control AR.Drones using a Wireless Xbox 360 joystick via XBoxDrv",
 	"keywords": [
 		"AR.Drone",
