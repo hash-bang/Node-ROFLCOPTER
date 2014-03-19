@@ -76,13 +76,12 @@ joystick
 				break;
 			case 7: // Y
 				if (data.value) {
-					console.log('ANIMATE');
-					client.animate('phiDance', 1000);
+					client.animate('flipAhead', 250);
 				}
 				break;
 			case 4: // A
 				if (data.value) {
-					client.animate('flipAhead', 1000);
+					client.animate('vzDance', 250);
 				}
 				break;
 			case 6: // X
@@ -92,7 +91,7 @@ joystick
 				break;
 			case 5: // B
 				if (data.value) {
-					client.animate('flipRight', 500);
+					client.animate('flipRight', 250);
 				}
 				break;
 			case 15: // Joystick Left
