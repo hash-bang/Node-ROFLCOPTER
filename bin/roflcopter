@@ -7,18 +7,27 @@
 
 var program = require('commander');
 var arDrone = require('ar-drone');
+var colors = require('colors');
+
+console.log('ROFTCOPTER boot'.bold.blue);
 
 program
 	.version(require('../package').version)
 	.option('-i, --ip [address]', 'IP address or hostname to connect to (default: "192.168.1.1")', '192.168.1.1')
+	.option('--framerate [rate]', 'The framerate to stream images (default: 5)', 5)
 	.parse(process.argv);
 
-console.log('Attaching joystick...');
+console.log('Attaching joystick...'.blue);
 var joystick = new (require('joystick'))(0, 3500, 350);
+if (!joystick.id) {
+	console.log('ERROR!'.bold.red, 'Cannot find usable joystick');
+	return;
+}
 
-console.log('Connecting to drone [' + program.ip + ']');
+console.log('Connecting to drone [' + program.ip + ']...');
 var client  = arDrone.createClient({
-	ip: program.ip
+	ip: program.ip,
+	frameRate: program.frameRate
 });
 
 
@@ -41,27 +50,27 @@ joystick
 		switch(data.number) {
 			case 12: // Select
 				if (data.value) {
-					console.log('Trigger take off');
-					client.takeoff(function() {
-						console.log('Taken off');
-					});
+					console.log('Status'.bold.green, 'Emergency Disabled');
+					client.disableEmergency();
 				}
 				break;
 			case 13: // Start button
 				if (data.value) {
 					client.disableEmergency();
-					console.log('Trigger take off');
+					console.log('Status'.bold.green, 'Take off!');
 					client.takeoff(function() {
-						console.log('Taken off');
+						console.log('Status'.bold.green, 'Take off confirm');
 					});
 				}
 			case 14: // Xbox logo
 				if (data.value) {
+					console.log('Status'.bold.green, 'Land');
 					client.land();
 				}
 				break;
 			case 11: // Right back shoulder
 				if (data.value) {
+					console.log('Altitude'.magenta, '+' + heightSpeed);
 					client.up(heightSpeed);
 				} else {
 					client.stop();
@@ -69,6 +78,7 @@ joystick
 				break;
 			case 10: // Left back shoulder
 				if (data.value) {
+					console.log('Altitude'.magenta, '-' + heightSpeed);
 					client.down(heightSpeed);
 				} else {
 					client.stop();
@@ -76,26 +86,31 @@ joystick
 				break;
 			case 7: // Y
 				if (data.value) {
+					console.log('Animate'.bold.yellow, 'flipAhead');
 					client.animate('flipAhead', 250);
 				}
 				break;
 			case 4: // A
 				if (data.value) {
+					console.log('Animate'.bold.yellow, 'vzDance');
 					client.animate('vzDance', 250);
 				}
 				break;
 			case 6: // X
 				if (data.value) {
+					console.log('Animate'.bold.yellow, 'flipLeft');
 					client.animate('flipLeft', 250);
 				}
 				break;
 			case 5: // B
 				if (data.value) {
+					console.log('Animate'.bold.yellow, 'flipRight');
 					client.animate('flipRight', 250);
 				}
 				break;
 			case 15: // Joystick Left
 			case 16: // Joystick Right
+				console.log('Status'.bold.red, 'Stop');
 				if (data.value) {
 					client.stop();
 				}
