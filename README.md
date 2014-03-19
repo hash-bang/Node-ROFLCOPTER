@@ -24,7 +24,5 @@ TODO
 ====
 * Add fixed rotation guides
 * Move rotation controls to D-Pad and fix both joysticks to strafe movement
-* Make 'takeoff' controls also retrigger emergency reset
 * Change from linear acceleration to logarithmic 
-* Fix animation controls so its less... decapitatingly... unpredictable
 * Add camera streaming functionality
