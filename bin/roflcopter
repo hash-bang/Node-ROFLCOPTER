@@ -14,7 +14,8 @@ console.log('ROFTCOPTER boot'.bold.blue);
 program
 	.version(require('../package').version)
 	.option('-i, --ip [address]', 'IP address or hostname to connect to (default: "192.168.1.1")', '192.168.1.1')
-	.option('--framerate [rate]', 'The framerate to stream images (default: 5)', 5)
+	.option('--fr, --framerate [rate]', 'The framerate to stream images (default: 5)', 5)
+	.option('-d, --datafeed', 'Return live data')
 	.parse(process.argv);
 
 console.log('Attaching joystick...'.blue);
@@ -30,6 +31,8 @@ var client  = arDrone.createClient({
 	frameRate: program.frameRate
 });
 
+if (program.datafeed)
+	client.config('general:navdata_demo', 'FALSE');
 
 var heightSpeed = 0.4;
 var maxInt = 32768;
@@ -43,6 +46,23 @@ var minMax = function(value, min, max) {
 	}
 	return value;
 }
+
+client
+	.on('hovering', function(data) {
+		console.log('onHovering'.underline.green, data);
+	})
+	.on('flying', function(data) {
+		console.log('onFlying'.underline.green, data);
+	})
+	.on('landing', function(data) {
+		console.log('onLanding'.underline.green, data);
+	})
+	.on('batteryChange', function(data) {
+		console.log('onBatteryChange'.underline.green, data);
+	})
+	.on('altitudeChange', function(data) {
+		console.log('onAltitudeChange'.underline.green, data);
+	});
 
 joystick
 	.on('button', function(data) {
