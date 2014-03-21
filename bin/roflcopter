@@ -54,7 +54,10 @@ var minMax = function(value, min, max) {
 }
 
 if (program.datafeed) {
-	client.config('general:navdata_demo', 'FALSE');
+	console.log('Enabling data feed'.bold.green);
+	client.config({key: 'general:navdata_demo', value: 'FALSE', timeout: 1000}, function() {
+		console.log('Drone ack for data feed'.green);
+	});
 
 	client
 		.on('hovering', function(data) {
@@ -71,6 +74,9 @@ if (program.datafeed) {
 		})
 		.on('altitudeChange', function(data) {
 			console.log('onAltitudeChange'.underline.green, data);
+		})
+		.on('navdata', function(data) {
+			console.log('navData'.underline.green, data);
 		});
 }
 
