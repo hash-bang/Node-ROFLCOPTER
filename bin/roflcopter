@@ -31,9 +31,8 @@ var client  = arDrone.createClient({
 	frameRate: program.frameRate
 });
 
-if (program.datafeed)
-	client.config('general:navdata_demo', 'FALSE');
-
+var listen = 0; // Whether to listen to commands (auto enabled after listenWait)
+var listenWait = 100;
 var heightSpeed = 0.4;
 var buttonSpeedX = 0.8; // Speed to increase / decrease something on button repeats
 var buttonRepeatX = 100; // How often to retrigger button events
@@ -54,26 +53,31 @@ var minMax = function(value, min, max) {
 	return value;
 }
 
-client
-	.on('hovering', function(data) {
-		console.log('onHovering'.underline.green, data);
-	})
-	.on('flying', function(data) {
-		console.log('onFlying'.underline.green, data);
-	})
-	.on('landing', function(data) {
-		console.log('onLanding'.underline.green, data);
-	})
-	.on('batteryChange', function(data) {
-		console.log('onBatteryChange'.underline.green, data);
-	})
-	.on('altitudeChange', function(data) {
-		console.log('onAltitudeChange'.underline.green, data);
-	});
-*/
+if (program.datafeed) {
+	client.config('general:navdata_demo', 'FALSE');
+
+	client
+		.on('hovering', function(data) {
+			console.log('onHovering'.underline.green, data);
+		})
+		.on('flying', function(data) {
+			console.log('onFlying'.underline.green, data);
+		})
+		.on('landing', function(data) {
+			console.log('onLanding'.underline.green, data);
+		})
+		.on('batteryChange', function(data) {
+			console.log('onBatteryChange'.underline.green, data);
+		})
+		.on('altitudeChange', function(data) {
+			console.log('onAltitudeChange'.underline.green, data);
+		});
+}
 
 joystick
 	.on('button', function(data) {
+		if (!listen)
+			return;
 		switch(data.number) {
 			// D-Pad {{{
 			case 0: // D-Pad Up
@@ -251,3 +255,8 @@ joystick
 				break;
 		}
 	});
+
+setTimeout(function() {
+	listen = true;
+	console.log('Waiting for commands'.blue);
+}, listenWait);
