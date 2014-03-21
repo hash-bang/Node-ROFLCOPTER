@@ -19,8 +19,9 @@ program
 	.parse(process.argv);
 
 console.log('Attaching joystick...'.blue);
-var joystick = new (require('joystick'))(0, 3500, 350);
-if (!joystick.id) {
+try {
+	var joystick = new (require('joystick'))(0, 3500, 350);
+} catch(e) {
 	console.log('ERROR!'.bold.red, 'Cannot find usable joystick');
 	return;
 }
