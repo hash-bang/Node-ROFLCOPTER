@@ -163,6 +163,7 @@ joystick
 						console.log('Status'.bold.green, 'Take off confirm');
 					});
 				}
+				break;
 			case 14: // Xbox logo
 				if (data.value) {
 					console.log('Status'.bold.green, 'Land');
