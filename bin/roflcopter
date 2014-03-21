@@ -35,8 +35,15 @@ if (program.datafeed)
 	client.config('general:navdata_demo', 'FALSE');
 
 var heightSpeed = 0.4;
+var buttonSpeedX = 0.8; // Speed to increase / decrease something on button repeats
+var buttonRepeatX = 100; // How often to retrigger button events
+var buttonSpeedY = 0.5; // Speed to increase / decrease something on button repeats
+var buttonRepeatY = 100;
 var maxInt = 32768;
 var deadZone = 1000;
+
+// Various timers
+var dPadXFunc, dPadXTimer, dPadYFunc, dPadYTimer;
 
 var minMax = function(value, min, max) {
 	if (value < min) {
@@ -63,11 +70,85 @@ client
 	.on('altitudeChange', function(data) {
 		console.log('onAltitudeChange'.underline.green, data);
 	});
+*/
 
 joystick
 	.on('button', function(data) {
-		console.log(data);
 		switch(data.number) {
+			// D-Pad {{{
+			case 0: // D-Pad Up
+				if (data.value) {
+					clearTimeout(dPadYTimer);
+					dPadYFunc = function() {
+						if (!dPadYFunc)
+							return;
+						client.front(buttonSpeedY);
+						setTimeout(dPadYFunc, buttonRepeatY);
+					};
+					dPadYTimer = setTimeout(dPadYFunc, buttonRepeatY);
+					console.log('Status'.green, 'Begin move forward');
+				} else {
+					console.log('Status'.green, 'Stop move forward');
+					dPadYFunc = null;
+					clearTimeout(dPadYTimer);
+					client.stop();
+				}
+				break;
+			case 1: // D-Pad Down
+				if (data.value) {
+					clearTimeout(dPadYTimer);
+					dPadYFunc = function() {
+						if (!dPadYFunc)
+							return;
+						client.back(buttonSpeedY);
+						setTimeout(dPadYFunc, buttonRepeatY);
+					};
+					dPadYTimer = setTimeout(dPadYFunc, buttonRepeatY);
+					console.log('Status'.green, 'Begin move backwards');
+				} else {
+					console.log('Status'.green, 'Stop move backwards');
+					dPadYFunc = null;
+					clearTimeout(dPadYTimer);
+					client.stop();
+				}
+				break;
+			case 2: // D-Pad Left
+				if (data.value) {
+					clearTimeout(dPadXTimer);
+					dPadXFunc = function() {
+						if (!dPadXFunc)
+							return;
+						client.counterClockwise(buttonSpeedX);
+						setTimeout(dPadXFunc, buttonRepeatX);
+					};
+					dPadXTimer = setTimeout(dPadXFunc, buttonRepeatX);
+					console.log('Status'.green, 'Begin rotate Counter-clockwise');
+				} else {
+					console.log('Status'.green, 'Stop rotate Counter-clockwise');
+					dPadXFunc = null;
+					clearTimeout(dPadXTimer);
+					client.stop();
+				}
+				break;
+			case 3: // D-Pad Right
+				if (data.value) {
+					clearTimeout(dPadXTimer);
+					dPadXFunc = function() {
+						if (!dPadXFunc)
+							return;
+						client.clockwise(buttonSpeedX);
+						setTimeout(dPadXFunc, buttonRepeatX);
+					};
+					dPadXTimer = setTimeout(dPadXFunc, buttonRepeatX);
+					console.log('Status'.green, 'Begin rotate Clockwise');
+				} else {
+					console.log('Status'.green, 'Stop rotate Clockwise');
+					dPadXFunc = null;
+					clearTimeout(dPadXTimer);
+					client.stop();
+				}
+				break;
+			// }}}
 			case 12: // Select
 				if (data.value) {
 					console.log('Status'.bold.green, 'Emergency Disabled');
