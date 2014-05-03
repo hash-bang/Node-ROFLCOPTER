@@ -23,16 +23,7 @@ program
 
 var listen = 0; // Whether to listen to commands (auto enabled after listenWait)
 var listenWait = 100;
-var heightSpeed = 0.4; // How quickly to increase height
-var buttonSpeedX = 0.8; // Speed to increase / decrease something on button repeats
-var buttonRepeatX = 100; // How often to retrigger button events
-var buttonSpeedY = 0.5; // Speed to increase / decrease something on button repeats
-var buttonRepeatY = 100;
 var maxInt = 32768;
-var deadZone = 1000;
-
-// Various timers
-var dPadXFunc, dPadXTimer, dPadYFunc, dPadYTimer;
 
 if (program.datafeed) {
 	console.log('Enabling data feed'.bold.green);
@@ -74,9 +65,8 @@ var client  = arDrone.createClient({
 });
 
 driver.client = client;
-driver.listen();
 
 setTimeout(function() {
-	listen = true;
 	console.log('Waiting for commands'.blue);
+	driver.listen();
 }, listenWait);

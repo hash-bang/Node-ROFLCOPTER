@@ -1,4 +1,5 @@
 var colors = require('colors');
+var util = require('util'); // FIXME: Rm
 
 var minMax = function(value, min, max) {
 	if (value < min) {
@@ -9,9 +10,18 @@ var minMax = function(value, min, max) {
 	return value;
 }
 
-var joystick;
+var joystick; // Holder for Joystick driver
 
-module.exports = {
+var deadZone = 1000;
+var dPadXFunc, dPadXTimer, dPadYFunc, dPadYTimer; // Various timers
+var heightSpeed = 0.4; // How quickly to increase height
+var buttonSpeedX = 0.8; // Speed to increase / decrease something on button repeats
+var buttonRepeatX = 100; // How often to retrigger button events
+var buttonSpeedY = 0.5; // Speed to increase / decrease something on button repeats
+var buttonRepeatY = 100;
+var maxInt = 32768;
+
+module.exports = me = {
 	client: null,
 
 	prepare: function() {
@@ -28,94 +38,92 @@ module.exports = {
 	listen: function() {
 		joystick
 			.on('button', function(data) {
-				if (!listen)
-					return;
 				switch(data.number) {
 					// D-Pad {{{
 					case 0: // D-Pad Up
 						if (data.value) {
-							clearTimeout(dPadYTimer);
+							clearTimeout(me.dPadYTimer);
 							dPadYFunc = function() {
 								if (!dPadYFunc)
 									return;
-								client.front(buttonSpeedY);
+								me.client.front(buttonSpeedY);
 								setTimeout(dPadYFunc, buttonRepeatY);
 							};
-							dPadYTimer = setTimeout(dPadYFunc, buttonRepeatY);
+							me.dPadYTimer = setTimeout(dPadYFunc, buttonRepeatY);
 							console.log('Status'.green, 'Begin move forward');
 						} else {
 							console.log('Status'.green, 'Stop move forward');
 							dPadYFunc = null;
-							clearTimeout(dPadYTimer);
-							client.stop();
+							clearTimeout(me.dPadYTimer);
+							me.client.stop();
 						}
 						break;
 					case 1: // D-Pad Down
 						if (data.value) {
-							clearTimeout(dPadYTimer);
+							clearTimeout(me.dPadYTimer);
 							dPadYFunc = function() {
 								if (!dPadYFunc)
 									return;
-								client.back(buttonSpeedY);
+								me.client.back(buttonSpeedY);
 								setTimeout(dPadYFunc, buttonRepeatY);
 							};
-							dPadYTimer = setTimeout(dPadYFunc, buttonRepeatY);
+							me.dPadYTimer = setTimeout(dPadYFunc, buttonRepeatY);
 							console.log('Status'.green, 'Begin move backwards');
 						} else {
 							console.log('Status'.green, 'Stop move backwards');
 							dPadYFunc = null;
-							clearTimeout(dPadYTimer);
-							client.stop();
+							clearTimeout(me.dPadYTimer);
+							me.client.stop();
 						}
 						break;
 					case 2: // D-Pad Left
 						if (data.value) {
-							clearTimeout(dPadXTimer);
+							clearTimeout(me.dPadXTimer);
 							dPadXFunc = function() {
 								if (!dPadXFunc)
 									return;
-								client.counterClockwise(buttonSpeedX);
+								me.client.counterClockwise(buttonSpeedX);
 								setTimeout(dPadXFunc, buttonRepeatX);
 							};
-							dPadXTimer = setTimeout(dPadXFunc, buttonRepeatX);
+							me.dPadXTimer = setTimeout(dPadXFunc, buttonRepeatX);
 							console.log('Status'.green, 'Begin rotate Counter-clockwise');
 						} else {
 							console.log('Status'.green, 'Stop rotate Counter-clockwise');
 							dPadXFunc = null;
-							clearTimeout(dPadXTimer);
-							client.stop();
+							clearTimeout(me.dPadXTimer);
+							me.client.stop();
 						}
 						break;
 					case 3: // D-Pad Right
 						if (data.value) {
-							clearTimeout(dPadXTimer);
+							clearTimeout(me.dPadXTimer);
 							dPadXFunc = function() {
 								if (!dPadXFunc)
 									return;
-								client.clockwise(buttonSpeedX);
+								me.client.clockwise(buttonSpeedX);
 								setTimeout(dPadXFunc, buttonRepeatX);
 							};
-							dPadXTimer = setTimeout(dPadXFunc, buttonRepeatX);
+							me.dPadXTimer = setTimeout(dPadXFunc, buttonRepeatX);
 							console.log('Status'.green, 'Begin rotate Clockwise');
 						} else {
 							console.log('Status'.green, 'Stop rotate Clockwise');
 							dPadXFunc = null;
-							clearTimeout(dPadXTimer);
-							client.stop();
+							clearTimeout(me.dPadXTimer);
+							me.client.stop();
 						}
 						break;
 					// }}}
 					case 12: // Select
 						if (data.value) {
 							console.log('Status'.bold.green, 'Emergency Disabled');
-							client.disableEmergency();
+							me.client.disableEmergency();
 						}
 						break;
 					case 13: // Start button
 						if (data.value) {
-							client.disableEmergency();
+							me.client.disableEmergency();
 							console.log('Status'.bold.green, 'Take off!');
-							client.takeoff(function() {
+							me.client.takeoff(function() {
 								console.log('Status'.bold.green, 'Take off confirm');
 							});
 						}
@@ -123,54 +131,54 @@ module.exports = {
 					case 14: // Xbox logo
 						if (data.value) {
 							console.log('Status'.bold.green, 'Land');
-							client.land();
+							me.client.land();
 						}
 						break;
 					case 11: // Right back shoulder
 						if (data.value) {
 							console.log('Altitude'.magenta, '+' + heightSpeed);
-							client.up(heightSpeed);
+							me.client.up(heightSpeed);
 						} else {
-							client.stop();
+							me.client.stop();
 						}
 						break;
 					case 10: // Left back shoulder
 						if (data.value) {
 							console.log('Altitude'.magenta, '-' + heightSpeed);
-							client.down(heightSpeed);
+							me.client.down(heightSpeed);
 						} else {
-							client.stop();
+							me.client.stop();
 						}
 						break;
 					case 7: // Y
 						if (data.value) {
 							console.log('Animate'.bold.yellow, 'flipAhead');
-							client.animate('flipAhead', 250);
+							me.client.animate('flipAhead', 250);
 						}
 						break;
 					case 4: // A
 						if (data.value) {
 							console.log('Animate'.bold.yellow, 'vzDance');
-							client.animate('vzDance', 250);
+							me.client.animate('vzDance', 250);
 						}
 						break;
 					case 6: // X
 						if (data.value) {
 							console.log('Animate'.bold.yellow, 'flipLeft');
-							client.animate('flipLeft', 250);
+							me.client.animate('flipLeft', 250);
 						}
 						break;
 					case 5: // B
 						if (data.value) {
 							console.log('Animate'.bold.yellow, 'flipRight');
-							client.animate('flipRight', 250);
+							me.client.animate('flipRight', 250);
 						}
 						break;
 					case 15: // Joystick Left
 					case 16: // Joystick Right
 						console.log('Status'.bold.red, 'Stop');
 						if (data.value) {
-							client.stop();
+							me.client.stop();
 						}
 				}
 			})
@@ -180,33 +188,32 @@ module.exports = {
 					case 1: // Left up/down
 					case 3: // Right up/down
 						if (data.value > 0-deadZone && data.value < deadZone) {
-							client.stop();	
+							me.client.stop();	
 						} else if (data.value < 0) {
-							client.front(minMax(1 - ((0-data.value) / maxInt)), 0, maxInt);
+							me.client.front(minMax(1 - ((0-data.value) / maxInt)), 0, maxInt);
 						} else {
-							client.back(minMax(data.value / maxInt, 0, maxInt));
+							me.client.back(minMax(data.value / maxInt, 0, maxInt));
 						}
 						break;
 					case 0: // Left left/right
 						if (data.value > 0-deadZone && data.value < deadZone) {
-							client.stop();	
+							me.client.stop();	
 						} else if (data.value < 0) {
-							client.counterClockwise(minMax(1 - ((0-data.value) / maxInt)), 0, maxInt);
+							me.client.counterClockwise(minMax(1 - ((0-data.value) / maxInt)), 0, maxInt);
 						} else {
-							client.clockwise(minMax(data.value / maxInt, 0, maxInt));
+							me.client.clockwise(minMax(data.value / maxInt, 0, maxInt));
 						}
 						break;
 					case 2: // Right left/right
 						if (data.value > 0-deadZone && data.value < deadZone) {
-							client.stop();	
+							me.client.stop();	
 						} else if (data.value < 0) {
-							client.left(minMax(1 - ((0-data.value) / maxInt)), 0, maxInt);
+							me.client.left(minMax(1 - ((0-data.value) / maxInt)), 0, maxInt);
 						} else {
-							client.right(minMax(data.value / maxInt, 0, maxInt));
+							me.client.right(minMax(data.value / maxInt, 0, maxInt));
 						}
 						break;
 				}
 			});
 	}
 };
-return driver;
