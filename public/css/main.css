@@ -1,0 +1,21 @@
+/* Constraint boxes: .container-vbox {{{ */
+body {
+	overflow: hidden;
+}
+
+.container-vbox {
+	display: block;
+	height: 500px;
+	overflow: hidden;
+	margin-left: 0;
+	margin-right: 0;
+}
+
+.container-vbox .vbox-9 {
+	height: 75%;
+}
+
+.container-vbox .vbox-3 {
+	height: 25%;
+}
+/* }}} */
