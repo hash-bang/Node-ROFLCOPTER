@@ -52,6 +52,11 @@ body {
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f5f5f5',GradientType=0 );
 }
 
+.panel .panel-heading .btn {
+	padding: 3px 6px;
+	margin: 3px;
+}
+
 .panel .panel-heading h4 {
 	font-weight: 700;
 	color: #777777;
