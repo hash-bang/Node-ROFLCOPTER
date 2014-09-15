@@ -7,8 +7,8 @@
 		<div class="col-md-12" ng-controller="logController">
 			<ul class="list-unstyled">
 				<li ng-repeat="log in logs">
-					<span class="text-muted">{{log.date | date:'H:mm:ss'}}</span>
-					{{log.text}}
+					<span class="text-muted">{{log.timestamp | date:'H:mm:ss'}}</span>
+					{{log.message}}
 				</li>
 			</ul>
 		</div>

@@ -35,8 +35,8 @@ app.use(layouts);
 // Settings / Winston {{{
 global.logger = new (winston.Logger)({
 	transports: [
-		new winston.transports.Console()
-		// new (winston.transports.File)({ filename: 'somefile.log' })
+		new winston.transports.Console(),
+		new (winston.transports.File)({ filename: config.logFile })
 	]
 });
 // }}}
