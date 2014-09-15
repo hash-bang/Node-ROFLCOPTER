@@ -5,7 +5,12 @@
 	</div>
 	<div class="row vbox-3">
 		<div class="col-md-12" ng-controller="logController">
-			LOG
+			<ul class="list-unstyled">
+				<li ng-repeat="log in logs">
+					<span class="text-muted">{{log.date | date:'H:mm:ss'}}</span>
+					{{log.text}}
+				</li>
+			</ul>
 		</div>
 	</div>
 </div>

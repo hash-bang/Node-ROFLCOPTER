@@ -4,5 +4,9 @@ var app = angular.module("app", [
 ]);
 
 app.run(function($rootScope) {
-	$rootScope.user = {};
+	$rootScope.config = {
+		autoRefresh: {
+			logs: 1000
+		}
+	};
 });
