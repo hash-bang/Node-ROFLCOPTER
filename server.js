@@ -12,6 +12,7 @@ var express = require('express');
 var layouts = require('express-ejs-layouts')
 var path = require('path');
 var fs = require('fs');
+var winston = require('winston');
 global.app = express();
 // }}}
 // Global functions {{{
@@ -31,16 +32,24 @@ app.set('layout', 'layouts/main');
 app.enable('view cache');
 app.use(layouts);
 // }}}
+// Settings / Winston {{{
+global.logger = new (winston.Logger)({
+	transports: [
+		new winston.transports.Console()
+		// new (winston.transports.File)({ filename: 'somefile.log' })
+	]
+});
+// }}}
 // Drone connection {{{
 var arDrone = require('ar-drone');
-console.log('[drone] Connecting to drone at ' + config.drone.ip.cyan + '...');
+logger.info('Connecting to drone at ' + config.drone.ip.cyan + '...');
 global.drone  = arDrone.createClient({
 	ip: config.drone.ip,
 	frameRate: config.drone.frameRate
 });
-console.log('[drone] Enabling data feed...');
+logger.info('Enabling data feed...');
 drone.config({key: 'general:navdata_demo', value: 'TRUE', timeout: 1000}, function() {
-	console.log('[drone] Drone data feed ' + 'enabled'.green);
+	logger.info('[drone] Drone data feed ' + 'enabled'.green);
 });
 // }}}
 // Controllers {{{
@@ -63,6 +72,6 @@ app.use(function(err, req, res, next){
 
 // Init {{{
 var server = app.listen(config.port, config.host, function() {
-	console.log('Web interface listening on ' + (config.host + ':' + config.port).cyan);
+	logger.log('Web interface listening on ' + (config.host + ':' + config.port).cyan);
 });
 // }}}
