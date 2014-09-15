@@ -1,9 +1,9 @@
-/* Constraint boxes: .container-vbox {{{ */
+/* Constraint boxes: .row-vbox {{{ */
 body {
 	overflow: hidden;
 }
 
-.container-vbox {
+.row-vbox {
 	display: block;
 	height: 500px;
 	overflow: hidden;
@@ -11,11 +11,10 @@ body {
 	margin-right: 0;
 }
 
-.container-vbox .vbox-9 {
-	height: 75%;
+.row-vbox > div {
+	overflow-y: auto;
 }
 
-.container-vbox .vbox-3 {
-	height: 25%;
-}
+.row-vbox .vbox-3 {height: 25%;}
+.row-vbox .vbox-9 {height: 75%;}
 /* }}} */
