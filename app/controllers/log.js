@@ -27,6 +27,8 @@ app.controller('logController', function($scope, $rootScope, $timeout, Logs) {
 
 $(function() {
 	$(document).on('mousewheel', '#logArea', function() { // When mouse scrolling - set the autoScroll to off
-		angular.element($('#logController')).scope().setAutoScroll(false);
+		ngApply('logController', function($scope) {
+			$scope.setAutoScroll(false);
+		});
 	});
 });
