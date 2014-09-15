@@ -7,6 +7,7 @@
 */
 
 // Requires {{{
+var colors = require('colors');
 var express = require('express');
 var layouts = require('express-ejs-layouts')
 var path = require('path');
@@ -30,6 +31,18 @@ app.set('layout', 'layouts/main');
 app.enable('view cache');
 app.use(layouts);
 // }}}
+// Drone connection {{{
+var arDrone = require('ar-drone');
+console.log('[drone] Connecting to drone at ' + config.drone.ip.cyan + '...');
+global.drone  = arDrone.createClient({
+	ip: config.drone.ip,
+	frameRate: config.drone.frameRate
+});
+console.log('[drone] Enabling data feed...');
+drone.config({key: 'general:navdata_demo', value: 'TRUE', timeout: 1000}, function() {
+	console.log('[drone] Drone data feed ' + 'enabled'.green);
+});
+// }}}
 // Controllers {{{
 requireTree('controllers');
 // }}}
@@ -50,6 +63,6 @@ app.use(function(err, req, res, next){
 
 // Init {{{
 var server = app.listen(config.port, config.host, function() {
-	console.log('Listening on ' + config.host + ':' + config.port);
+	console.log('Web interface listening on ' + (config.host + ':' + config.port).cyan);
 });
 // }}}

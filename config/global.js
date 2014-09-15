@@ -17,6 +17,10 @@ var defaults = {
 	host: '127.0.0.1',
 	port: process.env.PORT || 9000,
 	url: 'http://localhost',
+	drone: {
+		ip: '192.168.1.1',
+		frameRate: 5,
+	}
 };
 
 module.exports = _.merge(
