@@ -4,7 +4,6 @@ app.controller('logController', function($scope, $rootScope, $timeout, Logs) {
 	$scope.refresh = function() {
 		Logs.query().$promise
 			.then(function(data) {
-				console.log('GOT DATA', data);
 				$scope.logs = data;
 			})
 			.finally(function() {
