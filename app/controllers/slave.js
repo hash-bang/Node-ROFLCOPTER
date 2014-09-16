@@ -14,6 +14,35 @@ app.controller('slaveController', function($scope, $timeout, Slave) {
 		lat: 0
 	};
 
+	// Setup {{{
+	$scope.setup = function() {
+		$(window)
+			.on('deviceorientation', function(e) {
+				ngApply('slaveController', function($scope) {
+					$scope.rotation.x = event.beta;
+					$scope.rotation.y = event.gamma;
+					$scope.rotation.z = event.alpha;
+				});
+			})
+			.on('devicemotion', function(e) {
+				ngApply('slaveController', function($scope) {
+					$scope.acceleration.x = event.acceleration.x;
+					$scope.acceleration.y = event.acceleration.y;
+					$scope.acceleration.z = event.acceleration.z;
+				});
+			});
+
+
+			if (navigator.geolocation)
+				navigator.geolocation.watchPosition(function(position) {
+					ngApply('slaveController', function($scope) {
+						$scope.geoLocation.long = position.coords.longitude;
+						$scope.geoLocation.lat = position.coords.latitude;
+					});
+				}, function() {}, {enableHighAccuracy: true});
+	};
+	// }}}
+
 	// .dirty tracking {{{
 	$scope.dirty = false;
 	$scope.$watch('rotation', function() {
@@ -42,32 +71,4 @@ app.controller('slaveController', function($scope, $timeout, Slave) {
 	if ($scope.config.autoRefresh.slavePost) // Kick off initial save
 		$timeout($scope.save, $scope.config.autoRefresh.slavePost);
 	// }}}
-});
-
-$(function() {
-	$(window)
-		.on('deviceorientation', function(e) {
-			ngApply('slaveController', function($scope) {
-				$scope.rotation.x = event.beta;
-				$scope.rotation.y = event.gamma;
-				$scope.rotation.z = event.alpha;
-			});
-		})
-		.on('devicemotion', function(e) {
-			ngApply('slaveController', function($scope) {
-				$scope.acceleration.x = event.acceleration.x;
-				$scope.acceleration.y = event.acceleration.y;
-				$scope.acceleration.z = event.acceleration.z;
-			});
-		});
-
-
-		if (navigator.geolocation)
-			navigator.geolocation.watchPosition(function(position) {
-				ngApply('slaveController', function($scope) {
-					$scope.geoLocation.long = position.coords.longitude;
-					$scope.geoLocation.lat = position.coords.latitude;
-				});
-			}, function() {}, {enableHighAccuracy: true});
-
 });

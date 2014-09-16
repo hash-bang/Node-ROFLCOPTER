@@ -39,6 +39,10 @@ body {
 	padding: 5px;
 }
 
+.panel .panel-body.panel-nopad {
+	padding: 0;
+}
+
 .panel .panel-heading {
 	padding: 0;
 	box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.05);
@@ -56,6 +60,14 @@ body {
 .panel .panel-heading .btn {
 	padding: 3px 6px;
 	margin: 3px;
+}
+
+.panel .panel-heading .pull-right {
+	margin-right: 5px;
+}
+
+.panel .panel-heading .badge {
+	margin-top: 7px;
 }
 
 .panel .panel-heading h4 {
@@ -81,5 +93,10 @@ body {
 .panel .panel-heading h4 {
 	margin: 3px 2px 2px 2px;
 	padding: 5px;
+}
+/* }}} */
+/* Google maps {{{ */
+#mapController .panel-body, #mapController .panel-body > *, #mapController .panel-body .angular-google-map, #mapController .panel-body .angular-google-map-container {
+	height: 100%;
 }
 /* }}} */
