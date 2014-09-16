@@ -14,7 +14,7 @@ if (process.env.OPENSHIFT_NODEJS_IP) {
 var defaults = {
 	env: env,
 	root: path.normalize(__dirname + '/..'),
-	host: '127.0.0.1',
+	host: null, // Listen to all host requests
 	port: process.env.PORT || 9000,
 	url: 'http://localhost',
 	drone: {
