@@ -9,6 +9,10 @@ app.controller('slaveController', function($scope) {
 		y: 0,
 		z: 0
 	};
+	$scope.geoLocation = {
+		long: 0,
+		lat: 0
+	};
 });
 
 $(function() {
@@ -27,4 +31,14 @@ $(function() {
 				$scope.acceleration.z = event.acceleration.z;
 			});
 		});
+
+
+		if (navigator.geolocation)
+			navigator.geolocation.watchPosition(function(position) {
+				ngApply('slaveController', function($scope) {
+					$scope.geoLocation.long = position.coords.longitude;
+					$scope.geoLocation.lat = position.coords.latitude;
+				});
+			}, function() {}, {enableHighAccuracy: true});
+
 });
