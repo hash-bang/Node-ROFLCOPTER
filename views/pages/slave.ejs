@@ -1,0 +1,63 @@
+<div class="row row-vbox" ng-controller="slaveController">
+	<div class="row vbox-12">
+		<div class="col-md-12 vbox-stretch">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<div class="icon"><i class="fa fa-smile-o"></i></div>
+					<h4>Slaved Drone</h4>
+				</div>
+				<div class="panel-body">
+					<div class="form-horizontal">
+						<div class="form-group">
+							<label class="col-sm-2 control-label">Rotation</label>
+							<div class="col-sm-10 row">
+								<div class="col-xs-4 form-inline">
+									<div class="input-group">
+										<span class="input-group-addon">X</span>
+										<input type="text" class="form-control" ng-model="rotation.x"/>
+									</div>
+								</div>
+								<div class="col-xs-4 form-inline">
+									<div class="input-group">
+										<span class="input-group-addon">Y</span>
+										<input type="text" class="form-control" ng-model="rotation.y"/>
+									</div>
+								</div>
+								<div class="col-xs-4 form-inline">
+									<div class="input-group">
+										<span class="input-group-addon">Z</span>
+										<input type="text" class="form-control" ng-model="rotation.z"/>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">Acceleration</label>
+							<div class="col-sm-10 row">
+								<div class="col-xs-4 form-inline">
+									<div class="input-group">
+										<span class="input-group-addon">X</span>
+										<input type="text" class="form-control" ng-model="acceleration.x"/>
+									</div>
+								</div>
+								<div class="col-xs-4 form-inline">
+									<div class="input-group">
+										<span class="input-group-addon">Y</span>
+										<input type="text" class="form-control" ng-model="acceleration.y"/>
+									</div>
+								</div>
+								<div class="col-xs-4 form-inline">
+									<div class="input-group">
+										<span class="input-group-addon">Z</span>
+										<input type="text" class="form-control" ng-model="acceleration.z"/>
+									</div>
+								</div>
+							</div>
+						</div>
+						<pre>{{lastEvent | pretty}}</pre>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

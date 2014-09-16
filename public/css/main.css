@@ -16,6 +16,7 @@ body {
 
 .row-vbox .vbox-3 {height: 25%;}
 .row-vbox .vbox-9 {height: 75%;}
+.row-vbox .vbox-12 {height: 100%;}
 
 .row-vbox .panel {
 	height: 100%;
