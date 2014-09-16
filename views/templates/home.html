@@ -6,27 +6,82 @@
 					<div class="icon"><i class="fa fa-globe"></i></div>
 					<h4>Location</h4>
 					<div class="pull-right">
-						<span class="badge badge-info">{{drone.geoLocation.long}}</span>
+						<span class="badge badge-info">{{droid.geoLocation.long}}</span>
 						x
-						<span class="badge badge-info">{{drone.geoLocation.lat}}</span>
+						<span class="badge badge-info">{{droid.geoLocation.lat}}</span>
 						<a ng-click="setAutoCenter('toggle')" class="btn" ng-class="autoCenter ? 'btn-primary active' : 'btn-default'"><i class="fa fa-map-marker"></i></a>
 					</div>
 				</div>
 				<div class="panel-body panel-nopad">
 					<google-map center="map.center" zoom="map.zoom" draggable="true" options="map.options">
-						<marker idKey="drone" coords="{latitude: drone.geoLocation.lat, longitude: drone.geoLocation.long}"/>
+						<marker idKey="droid" coords="{latitude: droid.geoLocation.lat, longitude: droid.geoLocation.long}" options="{icon: google.maps.SymbolPath.CIRCLE, visible: true}"/>
 					</google-map>
 				</div>
 			</div>
 		</div>
-		<div class="col-md-4 vbox-stretch">
+		<div class="col-md-4 vbox-stretch" ng-controller="infoController">
 			<div class="panel panel-default">
 				<div class="panel-heading">
-					<div class="icon"><i class="fa fa-info"></i></div>
-					<h4>Information</h4>
+					<div class="icon"><i class="fa fa-android"></i></div>
+					<h4>Slaved droid</h4>
 				</div>
-				<div class="panel-body">
-					Hello World
+				<div class="panel-body form form-horizontal">
+					<div class="well">
+						<div id="cube" class="cube">
+							<div class="face one">1</div>
+							<div class="face two">2</div>
+							<div class="face three">3</div>
+							<div class="face four">4</div>
+							<div class="face five">5</div>
+							<div class="face six">6</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">Rotation</label>
+						<div class="col-sm-10 row">
+							<div class="col-xs-4 form-inline">
+								<div class="input-group">
+									<span class="input-group-addon">X</span>
+									<input type="text" class="form-control" ng-model="droid.rotation.x"/>
+								</div>
+							</div>
+							<div class="col-xs-4 form-inline">
+								<div class="input-group">
+									<span class="input-group-addon">Y</span>
+									<input type="text" class="form-control" ng-model="droid.rotation.y"/>
+								</div>
+							</div>
+							<div class="col-xs-4 form-inline">
+								<div class="input-group">
+									<span class="input-group-addon">Z</span>
+									<input type="text" class="form-control" ng-model="droid.rotation.z"/>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">Acceleration</label>
+						<div class="col-sm-10 row">
+							<div class="col-xs-4 form-inline">
+								<div class="input-group">
+									<span class="input-group-addon">X</span>
+									<input type="text" class="form-control" ng-model="droid.acceleration.x"/>
+								</div>
+							</div>
+							<div class="col-xs-4 form-inline">
+								<div class="input-group">
+									<span class="input-group-addon">Y</span>
+									<input type="text" class="form-control" ng-model="droid.acceleration.y"/>
+								</div>
+							</div>
+							<div class="col-xs-4 form-inline">
+								<div class="input-group">
+									<span class="input-group-addon">Z</span>
+									<input type="text" class="form-control" ng-model="droid.acceleration.z"/>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>

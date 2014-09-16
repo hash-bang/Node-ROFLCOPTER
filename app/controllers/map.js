@@ -1,7 +1,5 @@
-app.controller('mapController', function($scope, Slave) {
+app.controller('mapController', function($scope) {
 	$scope.autoCenter = true;
-	$scope.drone = {};
-
 	$scope.map = {
 		center: {
 			latitude: 45,
@@ -147,21 +145,12 @@ app.controller('mapController', function($scope, Slave) {
 		// }}}
 	};
 
-	$scope.refresh = function() {
-		Slave.get({}).$promise
-			.then(function(data) {
-				$scope.drone = data;
-				if ($scope.autoCenter) {
-					$scope.map.center.latitude = $scope.drone.geoLocation.lat;
-					$scope.map.center.longitude = $scope.drone.geoLocation.long;
-				}
-			})
-			.finally(function() {
-				if ($scope.config.autoRefresh.slave)
-					$timeout($scope.refresh, $scope.config.autoRefresh.slave);
-			});
-	};
-	$scope.refresh();
+	$scope.$watch('droid', function() {
+		if ($scope.autoCenter && $scope.droid && $scope.droid.geoLocation && $scope.droid.geoLocation.lat) {
+			$scope.map.center.latitude = $scope.droid.geoLocation.lat;
+			$scope.map.center.longitude = $scope.droid.geoLocation.long;
+		}
+	});
 
 	$scope.setAutoCenter = function(method) {
 		if (method == 'toggle') {
