@@ -1,4 +1,4 @@
-app.controller('slaveController', function($scope) {
+app.controller('slaveController', function($scope, $timeout, Slave) {
 	$scope.rotation = {
 		x: 0,
 		y: 0,
@@ -13,6 +13,35 @@ app.controller('slaveController', function($scope) {
 		long: 0,
 		lat: 0
 	};
+
+	// .dirty tracking {{{
+	$scope.dirty = false;
+	$scope.$watch('rotation', function() {
+		$scope.dirty = true;
+	});
+	$scope.$watch('acceleration', function() {
+		$scope.dirty = true;
+	});
+	$scope.$watch('geoLocation', function() {
+		$scope.dirty = true;
+	});
+	// }}}
+
+	// Periodic saving {{{
+	$scope.save = function() {
+		Slave.save({}, {
+			rotation: $scope.rotation,
+			acceleration: $scope.acceleration,
+			geoLocation: $scope.geoLocation
+		}).$promise
+			.finally(function() {
+				if ($scope.config.autoRefresh.slavePost)
+					$timeout($scope.save, $scope.config.autoRefresh.slavePost);
+			});
+	};
+	if ($scope.config.autoRefresh.slavePost) // Kick off initial save
+		$timeout($scope.save, $scope.config.autoRefresh.slavePost);
+	// }}}
 });
 
 $(function() {

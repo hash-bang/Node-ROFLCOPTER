@@ -32,6 +32,10 @@ app.set('layout', 'layouts/main');
 app.enable('view cache');
 app.use(layouts);
 // }}}
+// Settings / Parsing {{{
+var bodyParser = require('body-parser');
+app.use(bodyParser.json());
+// }}}
 // Settings / Winston {{{
 global.logger = new (winston.Logger)({
 	transports: [

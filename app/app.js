@@ -6,7 +6,8 @@ var app = angular.module("app", [
 app.run(function($rootScope) {
 	$rootScope.config = {
 		autoRefresh: {
-			logs: 1000
+			logs: 1000,
+			slavePost: 1000
 		}
 	};
 });
