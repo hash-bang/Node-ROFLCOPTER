@@ -1,5 +1,5 @@
 {
-  "name": "ngXenophilous",
+  "name": "ng-xenophilous",
   "version": "1.1.0",
   "homepage": "https://github.com/hash-bang/ngXenophilous",
   "authors": [
@@ -15,15 +15,5 @@
   "license": "MIT",
   "dependencies": {
     "jquery": ">1.5"
-  },
-  "_release": "1.1.0",
-  "_resolution": {
-    "type": "version",
-    "tag": "v1.1.0",
-    "commit": "db6b984443dd43c3332d1a88cbe1582acd73598c"
-  },
-  "_source": "git://github.com/hash-bang/ng-xenophilous.git",
-  "_target": "~1.1.0",
-  "_originalSource": "ng-xenophilous",
-  "_direct": true
+  }
 }
