@@ -1,11 +1,11 @@
 app.controller('mapController', function($scope) {
 	$scope.autoCenter = true;
 	$scope.map = {
-		center: {
-			latitude: 45,
-			longitude: -73
-		},
 		zoom: 20,
+		center: {
+			latitude: 153.41452289999998,
+			longitude: -28.0787291
+		},
 		// options {{{
 		options: {
 			streetViewControl: false,
@@ -144,19 +144,18 @@ app.controller('mapController', function($scope) {
 		}
 		// }}}
 	};
+	$scope.devices = [];
 
-	$scope.$watch('droid', function() {
-		if ($scope.autoCenter && $scope.droid && $scope.droid.geoLocation && $scope.droid.geoLocation.lat) {
-			$scope.map.center.latitude = $scope.droid.geoLocation.lat;
-			$scope.map.center.longitude = $scope.droid.geoLocation.long;
+	$scope.$on('updateDevice', function(e, device) {
+		var existingDevice = _.find($scope.devices, {id: device.id});
+		if (existingDevice) {
+			existingDevice = device;
+		} else {
+			$scope.devices.push(device);
+		}
+		if (device.geoLocation && device.geoLocation.lat) {
+			$scope.map.center.latitude = device.geoLocation.lat;
+			$scope.map.center.longitude = device.geoLocation.long;
 		}
 	});
-
-	$scope.setAutoCenter = function(method) {
-		if (method == 'toggle') {
-			$scope.autoCenter = ! $scope.autoCenter;
-		} else {
-			$scope.autoCenter = method;
-		}
-	};
 });

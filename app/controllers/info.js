@@ -1,4 +1,4 @@
-app.controller('infoController', function($scope, $timeout, Device) {
+app.controller('infoController', function($scope, $rootScope, $timeout, Device) {
 	var device = {};
 
 	if (!$scope.id)
@@ -8,7 +8,11 @@ app.controller('infoController', function($scope, $timeout, Device) {
 	$scope.refresh = function() {
 		Device.get({id: $scope.id}).$promise
 			.then(function(data) {
+				if (!data.id)
+					return;
 				$scope.device = data;
+				console.log('Update', $scope.device.id);
+				$rootScope.$broadcast('updateDevice', $scope.device);
 			})
 			.finally(function() {
 				if ($scope.config.autoRefresh.device)

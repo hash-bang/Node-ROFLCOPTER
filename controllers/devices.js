@@ -20,7 +20,9 @@ app.get('/api/device/:id', function(req, res) {
 });
 
 app.post('/api/device/:id', function(req, res) {
-	devices[req.params.id] = req.body;
+	var deviceInfo = req.body;
+	deviceInfo.id = req.params.id;
+	devices[req.params.id] = deviceInfo;
 	res.send(200);
 });
 

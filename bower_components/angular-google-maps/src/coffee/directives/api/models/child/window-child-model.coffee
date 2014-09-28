@@ -61,6 +61,10 @@ angular.module("google-maps.directives.api.models.child")
                             @gWin.isOpen(false)
                             @scope.closeClick() if @scope.closeClick?
 
+
+                getGWin: () =>
+                    return @gWin
+
                 watchShow: () =>
                     @scope.$watch('show', (newValue, oldValue) =>
                         if (newValue != oldValue)
@@ -130,9 +134,14 @@ angular.module("google-maps.directives.api.models.child")
                                     templateScope.parameter = @scope.templateParameter
                                 compiled = $compile(content.data)(templateScope)
                                 @gWin.setContent(compiled[0])
-                        show()
-                    else
-                      show()
+                    else if @scope.template
+                      if @gWin
+                          templateScope = @scope.$new()
+                          if angular.isDefined(@scope.templateParameter)
+                            templateScope.parameter = @scope.templateParameter
+                          compiled = $compile(@scope.template)(templateScope)
+                          @gWin.setContent(compiled[0])
+                    show()
 
                 showHide: ->
                     if @scope.show || !@scope.show?

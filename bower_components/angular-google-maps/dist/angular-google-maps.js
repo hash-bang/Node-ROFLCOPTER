@@ -1,4 +1,4 @@
-/*! angular-google-maps 1.2.1 2014-08-21
+/*! angular-google-maps 1.2.2 2014-09-25
  *  AngularJS directives for Google Maps
  *  git: https://github.com/nlaplante/angular-google-maps.git
  */
@@ -5048,7 +5048,9 @@ Original idea from: http://stackoverflow.com/questions/22758950/google-map-drawi
             this.removeEvents(this.internalListeners);
             this.gMarkerManager.remove(this.gMarker, true);
             delete this.gMarker;
-            return this.scope.$destroy();
+            if (!this.scope.$$destroyed) {
+              return this.scope.$destroy();
+            }
           }
         };
 
@@ -5353,6 +5355,7 @@ Original idea from: http://stackoverflow.com/questions/22758950/google-map-drawi
           this.watchOptions = __bind(this.watchOptions, this);
           this.watchCoords = __bind(this.watchCoords, this);
           this.watchShow = __bind(this.watchShow, this);
+          this.getGWin = __bind(this.getGWin, this);
           this.createGWin = __bind(this.createGWin, this);
           this.watchElement = __bind(this.watchElement, this);
           this.googleMapsHandles = [];
@@ -5433,6 +5436,10 @@ Original idea from: http://stackoverflow.com/questions/22758950/google-map-drawi
               }
             }));
           }
+        };
+
+        WindowChildModel.prototype.getGWin = function() {
+          return this.gWin;
         };
 
         WindowChildModel.prototype.watchShow = function() {
@@ -5521,7 +5528,7 @@ Original idea from: http://stackoverflow.com/questions/22758950/google-map-drawi
         };
 
         WindowChildModel.prototype.showWindow = function() {
-          var show,
+          var compiled, show, templateScope,
             _this = this;
           show = function() {
             if (_this.gWin) {
@@ -5544,10 +5551,17 @@ Original idea from: http://stackoverflow.com/questions/22758950/google-map-drawi
                 return _this.gWin.setContent(compiled[0]);
               });
             }
-            return show();
-          } else {
-            return show();
+          } else if (this.scope.template) {
+            if (this.gWin) {
+              templateScope = this.scope.$new();
+              if (angular.isDefined(this.scope.templateParameter)) {
+                templateScope.parameter = this.scope.templateParameter;
+              }
+              compiled = $compile(this.scope.template)(templateScope);
+              this.gWin.setContent(compiled[0]);
+            }
           }
+          return show();
         };
 
         WindowChildModel.prototype.showHide = function() {
@@ -5813,6 +5827,121 @@ Original idea from: http://stackoverflow.com/questions/22758950/google-map-drawi
 
       })(BaseObject);
       return LayerParentModel;
+    }
+  ]);
+
+}).call(this);
+
+(function() {
+  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+  angular.module("google-maps.directives.api.models.parent").factory("MapTypeParentModel", [
+    "BaseObject", "Logger", '$timeout', function(BaseObject, Logger, $timeout) {
+      var MapTypeParentModel;
+      MapTypeParentModel = (function(_super) {
+        __extends(MapTypeParentModel, _super);
+
+        function MapTypeParentModel(scope, element, attrs, gMap, $log) {
+          var _this = this;
+          this.scope = scope;
+          this.element = element;
+          this.attrs = attrs;
+          this.gMap = gMap;
+          this.$log = $log != null ? $log : Logger;
+          this.hideOverlay = __bind(this.hideOverlay, this);
+          this.showOverlay = __bind(this.showOverlay, this);
+          this.refreshMapType = __bind(this.refreshMapType, this);
+          this.createMapType = __bind(this.createMapType, this);
+          if (this.attrs.options == null) {
+            this.$log.info("options attribute for the map-type directive is mandatory. Map type creation aborted!!");
+            return;
+          }
+          this.id = this.gMap.overlayMapTypesCount = this.gMap.overlayMapTypesCount + 1 || 0;
+          this.doShow = true;
+          this.createMapType();
+          if (angular.isDefined(this.attrs.show)) {
+            this.doShow = this.scope.show;
+          }
+          if (this.doShow && (this.gMap != null)) {
+            this.showOverlay();
+          }
+          this.scope.$watch("show", function(newValue, oldValue) {
+            if (newValue !== oldValue) {
+              _this.doShow = newValue;
+              if (newValue) {
+                return _this.showOverlay();
+              } else {
+                return _this.hideOverlay();
+              }
+            }
+          }, true);
+          this.scope.$watch("options", function(newValue, oldValue) {
+            if (!_.isEqual(newValue, oldValue)) {
+              return _this.refreshMapType();
+            }
+          }, true);
+          if (angular.isDefined(this.attrs.refresh)) {
+            this.scope.$watch("refresh", function(newValue, oldValue) {
+              if (!_.isEqual(newValue, oldValue)) {
+                return _this.refreshMapType();
+              }
+            }, true);
+          }
+          this.scope.$on("$destroy", function() {
+            _this.hideOverlay();
+            return _this.mapType = null;
+          });
+        }
+
+        MapTypeParentModel.prototype.createMapType = function() {
+          if (this.scope.options.getTile != null) {
+            this.mapType = this.scope.options;
+          } else if (this.scope.options.getTileUrl != null) {
+            this.mapType = new google.maps.ImageMapType(this.scope.options);
+          } else {
+            this.$log.info("options should provide either getTile or getTileUrl methods. Map type creation aborted!!");
+            return;
+          }
+          if (this.attrs.id && this.scope.id) {
+            this.gMap.mapTypes.set(this.scope.id, this.mapType);
+            if (!angular.isDefined(this.attrs.show)) {
+              this.doShow = false;
+            }
+          }
+          return this.mapType.layerId = this.id;
+        };
+
+        MapTypeParentModel.prototype.refreshMapType = function() {
+          this.hideOverlay();
+          this.mapType = null;
+          this.createMapType();
+          if (this.doShow && (this.gMap != null)) {
+            return this.showOverlay();
+          }
+        };
+
+        MapTypeParentModel.prototype.showOverlay = function() {
+          return this.gMap.overlayMapTypes.push(this.mapType);
+        };
+
+        MapTypeParentModel.prototype.hideOverlay = function() {
+          var found,
+            _this = this;
+          found = false;
+          return this.gMap.overlayMapTypes.forEach(function(mapType, index) {
+            if (!found && mapType.layerId === _this.id) {
+              found = true;
+              _this.gMap.overlayMapTypes.removeAt(index);
+            }
+          });
+        };
+
+        return MapTypeParentModel;
+
+      })(BaseObject);
+      return MapTypeParentModel;
     }
   ]);
 
@@ -7107,6 +7236,7 @@ Original idea from: http://stackoverflow.com/questions/22758950/google-map-drawi
             coords: '=coords',
             show: '=show',
             templateUrl: '=templateurl',
+            template: '=template',
             templateParameter: '=templateparameter',
             isIconVisibleOnClick: '=isiconvisibleonclick',
             closeClick: '&closeclick',
@@ -7156,11 +7286,10 @@ Original idea from: http://stackoverflow.com/questions/22758950/google-map-drawi
             $scope.deferred.promise.then(function() {
               return ExtendGWin.init();
             });
-            return _.extend(ctrlObj, {
-              getMap: function() {
-                return $scope.map;
-              }
-            });
+            ctrlObj.getMap = function() {
+              return $scope.map;
+            };
+            return _.extend(this, ctrlObj);
           };
           this.controller = ["$scope", ctrlFn];
           self = this;
@@ -7183,6 +7312,7 @@ Original idea from: http://stackoverflow.com/questions/22758950/google-map-drawi
           options: "=",
           events: "=",
           styles: "=",
+          draggable: "=",
           bounds: "="
         };
 
@@ -7232,7 +7362,7 @@ Original idea from: http://stackoverflow.com/questions/22758950/google-map-drawi
           }
           mapOptions = angular.extend({}, DEFAULTS, opts, {
             center: this.getCoords(scope.center),
-            draggable: this.isTrue(attrs.draggable),
+            draggable: attrs.draggable != null ? this.isTrue(scope.draggable) : true,
             zoom: scope.zoom,
             bounds: scope.bounds
           });
@@ -9032,6 +9162,89 @@ Nicholas McCready - https://twitter.com/nmccready
   angular.module('google-maps').directive('FreeDrawPolygons'.ns(), [
     'FreeDrawPolygons', function(FreeDrawPolygons) {
       return new FreeDrawPolygons();
+    }
+  ]);
+
+}).call(this);
+
+/*
+!
+The MIT License
+
+Copyright (c) 2010-2013 Google, Inc. http://angularjs.org
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+
+angular-google-maps
+https://github.com/nlaplante/angular-google-maps
+
+@authors:
+- Nicolas Laplante https://plus.google.com/108189012221374960701
+- Nicholas McCready - https://twitter.com/nmccready
+*/
+
+
+/*
+Map Layer directive
+
+This directive is used to create any type of Layer from the google maps sdk.
+This directive creates a new scope.
+
+{attribute show optional}  true (default) shows the trafficlayer otherwise it is hidden
+*/
+
+
+(function() {
+  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
+  angular.module("google-maps").directive("mapType", [
+    "$timeout", "Logger", "MapTypeParentModel", function($timeout, Logger, MapTypeParentModel) {
+      var MapType;
+      MapType = (function() {
+        function MapType() {
+          this.link = __bind(this.link, this);
+          this.$log = Logger;
+          this.restrict = "EMA";
+          this.require = '^' + 'googleMap';
+          this.priority = -1;
+          this.transclude = true;
+          this.template = '<span class=\"angular-google-map-layer\" ng-transclude></span>';
+          this.replace = true;
+          this.scope = {
+            show: "=show",
+            options: '=options',
+            refresh: '=refresh',
+            id: '@'
+          };
+        }
+
+        MapType.prototype.link = function(scope, element, attrs, mapCtrl) {
+          var _this = this;
+          return mapCtrl.getScope().deferred.promise.then(function(map) {
+            return new MapTypeParentModel(scope, element, attrs, map);
+          });
+        };
+
+        return MapType;
+
+      })();
+      return new MapType();
     }
   ]);
 

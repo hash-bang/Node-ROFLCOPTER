@@ -6,15 +6,15 @@
 					<div class="icon"><i class="fa fa-globe"></i></div>
 					<h4>Location</h4>
 					<div class="pull-right">
-						<span class="badge badge-info">{{droid.geoLocation.long}}</span>
+						<span class="badge badge-info">{{map.center.longitude}}</span>
 						x
-						<span class="badge badge-info">{{droid.geoLocation.lat}}</span>
+						<span class="badge badge-info">{{map.center.latitude}}</span>
 						<a ng-click="setAutoCenter('toggle')" class="btn" ng-class="autoCenter ? 'btn-primary active' : 'btn-default'"><i class="fa fa-map-marker"></i></a>
 					</div>
 				</div>
 				<div class="panel-body panel-nopad">
 					<google-map center="map.center" zoom="map.zoom" draggable="true" options="map.options">
-						<marker idKey="droid" coords="{latitude: droid.geoLocation.lat, longitude: droid.geoLocation.long}" options="{icon: google.maps.SymbolPath.CIRCLE, visible: true}"/>
+						<marker ng-repeat="device in devices" idKey="device.id" coords="{latitude: device.geoLocation.lat, longitude: device.geoLocation.long}" options="{icon: google.maps.SymbolPath.CIRCLE, visible: true}"/>
 					</google-map>
 				</div>
 			</div>
