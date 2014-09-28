@@ -8,8 +8,8 @@ app.run(function($rootScope) {
 	$rootScope.config = {
 		autoRefresh: {
 			logs: 1000,
-			slave: 1000,
-			slavePost: 1000
+			device: 1000,
+			deviceUpdate: 1000
 		}
 	};
 });

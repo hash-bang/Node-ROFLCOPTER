@@ -1,16 +1,16 @@
 // App global controller (also $rootScope)
-app.controller('globalController', function($scope, $rootScope, $timeout, Slave) {
+app.controller('globalController', function($scope, $rootScope, $timeout, Device) {
 	$rootScope.droid = {};
 	$scope.id = 'nova';
 
 	$scope.refresh = function() {
-		Slave.get({id: $scope.id}).$promise
+		Device.get({id: $scope.id}).$promise
 			.then(function(data) {
 				$rootScope.droid = data;
 			})
 			.finally(function() {
-				if ($scope.config.autoRefresh.slave)
-					$timeout($scope.refresh, $scope.config.autoRefresh.slave);
+				if ($scope.config.autoRefresh.device)
+					$timeout($scope.refresh, $scope.config.autoRefresh.device);
 			});
 	};
 	$scope.refresh();
