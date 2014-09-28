@@ -25,10 +25,23 @@ var listen = 0; // Whether to listen to commands (auto enabled after listenWait)
 var listenWait = 100;
 var maxInt = 32768;
 
+var driver = require('../drivers/' + program.input + '.js');
+driver.program = program;
+
+if (!driver.prepare())
+	return;
+
+console.log('Connecting to drone [' + program.ip + ']...');
+var client  = arDrone.createClient({
+	ip: program.ip,
+	frameRate: program.frameRate
+});
+
+// Data feed tracking {{{
 if (program.datafeed) {
 	console.log('Enabling data feed'.bold.green);
-	client.config({key: 'general:navdata_demo', value: 'FALSE', timeout: 1000}, function() {
-		console.log('Drone ack for data feed'.green);
+	client.config({key: 'general:navdata_demo', value: 'TRUE', timeout: 1000}, function() {
+		console.log('Drone data feed enabled'.green);
 	});
 
 	client
@@ -51,20 +64,16 @@ if (program.datafeed) {
 			console.log('navData'.underline.green, data);
 		});
 }
-
-var driver = require('../drivers/' + program.input + '.js');
-driver.program = program;
-
-if (!driver.prepare())
-	return;
-
-console.log('Connecting to drone [' + program.ip + ']...');
-var client  = arDrone.createClient({
-	ip: program.ip,
-	frameRate: program.frameRate
-});
+// }}}
 
 driver.client = client;
+
+var util = require('util');
+var feeder = function() {
+	console.log(util.inspect(client.navData.demo, {color: true}));
+	setTimeout(feeder, 1000);
+};
+feeder();
 
 setTimeout(function() {
 	console.log('Waiting for commands'.blue);

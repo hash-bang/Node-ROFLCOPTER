@@ -1,5 +1,4 @@
 var colors = require('colors');
-var util = require('util'); // FIXME: Rm
 
 var minMax = function(value, min, max) {
 	if (value < min) {
