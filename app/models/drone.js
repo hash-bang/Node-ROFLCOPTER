@@ -10,6 +10,9 @@ app.factory('Drone', function($resource) {
 	*/
 
 	return $resource('/api/actions', {}, {
-		move: {url: '/api/actions/move/:direction/:speed?'}
+		move: {url: '/api/actions/move/:id/:direction/:speed?'},
+		action: {url: '/api/action/:id/:action'},
+		rotate: {url: '/api/action/:id/:direction'},
+		altitude: {url: '/api/altitude/:id/:direction'}
 	});
 });

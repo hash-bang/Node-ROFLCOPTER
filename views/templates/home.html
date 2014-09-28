@@ -20,6 +20,7 @@
 			</div>
 		</div>
 		<div class="col-md-4 vbox-12">
+			<div ng-repeat="id in [config.devices.drone]" ng-include="'/templates/panels/pilot.html'"></div>
 			<div ng-repeat="id in [config.devices.drone]" ng-include="'/templates/panels/info.html'"></div>
 			<div ng-repeat="id in [config.devices.android]" ng-include="'/templates/panels/info.html'"></div>
 		</div>

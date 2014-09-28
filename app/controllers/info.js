@@ -1,8 +1,8 @@
 app.controller('infoController', function($scope, $rootScope, $timeout, Device) {
-	var device = {};
-
 	if (!$scope.id)
 		$scope.id = $scope.config.devices.drone;
+
+	var device = {};
 
 	// Refresh {{{
 	$scope.refresh = function() {

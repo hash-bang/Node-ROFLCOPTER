@@ -1,4 +1,4 @@
-app.get('/api/actions/takeoff', function(req, res) {
+app.get('/api/actions/:id/takeoff', function(req, res) {
 	drone.disableEmergency();
 	logger.log('Take off!');
 	drone.takeoff(function() {
@@ -7,12 +7,12 @@ app.get('/api/actions/takeoff', function(req, res) {
 	});
 });
 
-app.get('/api/actions/reset', function(req, res) {
+app.get('/api/actions/:id/reset', function(req, res) {
 	drone.disableEmergency();
 	res.send(200);
 });
 
-app.get('/api/actions/land', function(req, res) {
+app.get('/api/actions/:id/land', function(req, res) {
 	logger.log('Land!');
 	drone.land(function() {
 		logger.info('Landed');
@@ -20,7 +20,7 @@ app.get('/api/actions/land', function(req, res) {
 	});
 });
 
-app.get('/api/actions/stop', function(req, res) {
+app.get('/api/actions/:id/stop', function(req, res) {
 	logger.log('Stop!');
 	drone.stop();
 	res.send(200);
