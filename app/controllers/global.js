@@ -1,9 +1,10 @@
 // App global controller (also $rootScope)
 app.controller('globalController', function($scope, $rootScope, $timeout, Slave) {
 	$rootScope.droid = {};
+	$scope.id = 'nova';
 
 	$scope.refresh = function() {
-		Slave.get({}).$promise
+		Slave.get({id: $scope.id}).$promise
 			.then(function(data) {
 				$rootScope.droid = data;
 			})

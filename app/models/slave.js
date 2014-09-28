@@ -1,4 +1,4 @@
 app.factory('Slave', function($resource){
-	return $resource('/api/slave', {}, {
+	return $resource('/api/slave/:id', {}, {
 	});
 });

@@ -1,4 +1,7 @@
-app.controller('slaveController', function($scope, $timeout, Slave) {
+app.controller('slaveController', function($scope, $timeout, $location, Slave) {
+	var pathBits = window.location.pathname.match(/\/slave\/(.*)$/);
+	$scope.id = pathBits ? pathBits[1] : 'unknown';
+
 	$scope.rotation = {
 		x: 0,
 		y: 0,
@@ -58,15 +61,22 @@ app.controller('slaveController', function($scope, $timeout, Slave) {
 
 	// Periodic saving {{{
 	$scope.save = function() {
-		Slave.save({}, {
-			rotation: $scope.rotation,
-			acceleration: $scope.acceleration,
-			geoLocation: $scope.geoLocation
-		}).$promise
-			.finally(function() {
-				if ($scope.config.autoRefresh.slavePost)
-					$timeout($scope.save, $scope.config.autoRefresh.slavePost);
-			});
+		if ($scope.dirty) {
+			console.log('SLAVE', $scope.id);
+			$scope.dirty = false;
+			Slave.save({id: $scope.id}, {
+				rotation: $scope.rotation,
+				acceleration: $scope.acceleration,
+				geoLocation: $scope.geoLocation
+			}).$promise
+				.finally(function() {
+					if ($scope.config.autoRefresh.slavePost)
+						$timeout($scope.save, $scope.config.autoRefresh.slavePost);
+				});
+		} else {
+			if ($scope.config.autoRefresh.slavePost)
+				$timeout($scope.save, $scope.config.autoRefresh.slavePost);
+		}
 	};
 	if ($scope.config.autoRefresh.slavePost) // Kick off initial save
 		$timeout($scope.save, $scope.config.autoRefresh.slavePost);
