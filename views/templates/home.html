@@ -19,80 +19,9 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-md-4 vbox-12" ng-controller="infoController">
-			<div class="panel panel-default" ng-controller="pilotController">
-				<div class="panel-heading">
-					<div class="icon"><i class="fa fa-android"></i></div>
-					<h4>Pilot</h4>
-				</div>
-				<div class="panel-body form form-horizontal">
-					<pre>{{status}}</pre>
-				</div>
-			</div>
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<div class="icon"><i class="fa fa-android"></i></div>
-					<h4>Slaved droid</h4>
-				</div>
-				<div class="panel-body form form-horizontal">
-					<div class="well">
-						<div id="cube" class="cube">
-							<div class="face one">1</div>
-							<div class="face two">2</div>
-							<div class="face three">3</div>
-							<div class="face four">4</div>
-							<div class="face five">5</div>
-							<div class="face six">6</div>
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-sm-2 control-label">Rotation</label>
-						<div class="col-sm-10 row">
-							<div class="col-xs-4 form-inline">
-								<div class="input-group">
-									<span class="input-group-addon">X</span>
-									<input type="text" class="form-control" ng-model="droid.rotation.x"/>
-								</div>
-							</div>
-							<div class="col-xs-4 form-inline">
-								<div class="input-group">
-									<span class="input-group-addon">Y</span>
-									<input type="text" class="form-control" ng-model="droid.rotation.y"/>
-								</div>
-							</div>
-							<div class="col-xs-4 form-inline">
-								<div class="input-group">
-									<span class="input-group-addon">Z</span>
-									<input type="text" class="form-control" ng-model="droid.rotation.z"/>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-sm-2 control-label">Acceleration</label>
-						<div class="col-sm-10 row">
-							<div class="col-xs-4 form-inline">
-								<div class="input-group">
-									<span class="input-group-addon">X</span>
-									<input type="text" class="form-control" ng-model="droid.acceleration.x"/>
-								</div>
-							</div>
-							<div class="col-xs-4 form-inline">
-								<div class="input-group">
-									<span class="input-group-addon">Y</span>
-									<input type="text" class="form-control" ng-model="droid.acceleration.y"/>
-								</div>
-							</div>
-							<div class="col-xs-4 form-inline">
-								<div class="input-group">
-									<span class="input-group-addon">Z</span>
-									<input type="text" class="form-control" ng-model="droid.acceleration.z"/>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
+		<div class="col-md-4 vbox-12">
+			<div ng-repeat="id in [config.devices.drone]" ng-include="'/templates/panels/info.html'"></div>
+			<div ng-repeat="id in [config.devices.android]" ng-include="'/templates/panels/info.html'"></div>
 		</div>
 	</div>
 	<div class="row vbox-3">
