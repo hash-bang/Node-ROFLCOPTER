@@ -1,0 +1,152 @@
+/* Constraint boxes: .vbox {{{ */
+body {
+	overflow: hidden;
+}
+
+/* Vertical grid model: .vbox {{{ */
+.vbox {
+	display: block;
+	height: 500px;
+	overflow: hidden;
+	margin-left: 0;
+	margin-right: 0;
+}
+
+.vbox .vbox-3 {height: 25%;}
+.vbox .vbox-9 {height: 75%;}
+.vbox .vbox-12 {height: 100%;}
+
+.vbox .panel-fill {
+	height: 100%;
+}
+
+.vbox .vbox-inherit-parent {
+	overflow-y: auto;
+}
+
+.vbox .vbox-fill {
+	height: 99%;
+}
+/* }}} */
+/* Panel improvements {{{ */
+.panel {
+	margin: 5px;
+}
+
+.panel .panel-body {
+	padding: 5px;
+}
+
+.panel .panel-body.panel-nopad {
+	padding: 0;
+}
+
+.panel .panel-heading {
+	padding: 0;
+	box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.05);
+	background: #ffffff;
+	background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJod…EiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+	background: -moz-linear-gradient(top, #ffffff 0%, #f5f5f5 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#f5f5f5));
+	background: -webkit-linear-gradient(top, #ffffff 0%,#f5f5f5 100%);
+	background: -o-linear-gradient(top, #ffffff 0%,#f5f5f5 100%);
+	background: -ms-linear-gradient(top, #ffffff 0%,#f5f5f5 100%);
+	background: linear-gradient(to bottom, #ffffff 0%,#f5f5f5 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f5f5f5',GradientType=0 );
+}
+
+.panel .panel-heading .btn {
+	padding: 3px 6px;
+	margin: 3px;
+}
+
+.panel .panel-heading .pull-right {
+	margin-right: 5px;
+}
+
+.panel .panel-heading .badge {
+	margin-top: 7px;
+}
+
+.panel .panel-heading h4 {
+	font-weight: 700;
+	color: #777777;
+	display: inline-block;
+	padding: 11px 0 11px 50px;
+}
+
+.panel .panel-heading .icon {
+	float: left;
+	border-right: 1px solid #c9c9c9;
+	width: 41px;
+	height: 34px;
+	box-shadow: none;
+	top: 0;
+	left: 1px;
+	text-align: center;
+	font-size: 20px;
+	padding-top: 4px;
+}
+
+.panel .panel-heading h4 {
+	margin: 3px 2px 2px 2px;
+	padding: 5px;
+}
+/* }}} */
+/* Google maps {{{ */
+#mapController .panel-body, #mapController .panel-body > *, #mapController .panel-body .angular-google-map, #mapController .panel-body .angular-google-map-container {
+	height: 100%;
+}
+/* }}} */
+/* 3D cube {{{ */
+.cube {
+	width: 150px;
+	height: 150px;
+	position: relative;
+	margin: 30px auto;
+	-webkit-transform-style: preserve-3d;
+	transform-style: preserve-3d;
+}
+
+.face {
+	width: 150px;
+	height: 150px;
+	position: absolute;
+	font-size: 80px;
+	text-align: center;
+	line-height: 150px;
+	background-color: #999999;
+	box-shadow: inset 0 0 20px #333333;
+	opacity: 0.6;
+}
+
+.cube .one {
+	-webkit-transform: translateZ(75px);
+	transform: translateZ(75px);
+}
+
+.cube .two {
+	-webkit-transform: rotateY(90deg) translateZ(75px);
+	transform: rotateY(90deg) translateZ(75px);
+}
+
+.cube .three {
+	-webkit-transform: rotateY(180deg) translateZ(75px);
+	transform: rotateY(180deg) translateZ(75px);
+}
+
+.cube .four {
+	-webkit-transform: rotateY(-90deg) translateZ(75px);
+	transform: rotateY(-90deg) translateZ(75px);
+}
+
+.cube .five {
+	-webkit-transform: rotateX(90deg) translateZ(75px);
+	transform: rotateX(90deg) translateZ(75px);
+}
+
+.cube .six {
+	-webkit-transform: rotateX(-90deg) translateZ(75px) rotate(0deg);
+	transform: rotateX(-90deg) translateZ(75px) rotate(0deg);
+}
+/* }}} */
