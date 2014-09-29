@@ -1,23 +1,7 @@
 <div class="row vbox">
 	<div class="row vbox-9">
-		<div class="col-md-8 vbox-12" ng-controller="mapController" id="mapController">
-			<div class="panel panel-default panel-fill">
-				<div class="panel-heading">
-					<div class="icon"><i class="fa fa-globe"></i></div>
-					<h4>Location</h4>
-					<div class="pull-right">
-						<span class="badge badge-info">{{map.center.longitude}}</span>
-						x
-						<span class="badge badge-info">{{map.center.latitude}}</span>
-						<a ng-click="setAutoCenter('toggle')" class="btn" ng-class="autoCenter ? 'btn-primary active' : 'btn-default'"><i class="fa fa-map-marker"></i></a>
-					</div>
-				</div>
-				<div class="panel-body panel-nopad">
-					<google-map center="map.center" zoom="map.zoom" draggable="true" options="map.options">
-						<marker ng-repeat="device in devices" idKey="device.id" coords="{latitude: device.geoLocation.lat, longitude: device.geoLocation.long}" options="{icon: google.maps.SymbolPath.CIRCLE, visible: true}"/>
-					</google-map>
-				</div>
-			</div>
+		<div class="col-md-8 vbox-12">
+			<div class="vbox-12" ng-include="'/templates/panels/map.html'"></div>
 		</div>
 		<div class="col-md-4 vbox-12">
 			<div ng-repeat="id in [config.devices.drone]" ng-include="'/templates/panels/pilot.html'"></div>
