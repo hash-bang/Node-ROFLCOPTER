@@ -1,0 +1,17 @@
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<div class="icon"><i class="fa fa-bullhorn"></i></div>
+		<h4>Logs</h4>
+		<div class="pull-right">
+			<a ng-click="setAutoScroll('toggle')" class="btn" ng-class="autoScroll ? 'btn-primary active' : 'btn-default'"><i class="fa fa-fast-forward"></i></a>
+		</div>
+	</div>
+	<div class="panel-body vbox-fill" id="logArea">
+		<ul class="list-unstyled">
+			<li ng-repeat="log in logs">
+				<span class="text-muted">{{log.timestamp | date:'H:mm:ss'}}</span>
+				{{log.message}}
+			</li>
+		</ul>
+	</div>
+</div>
