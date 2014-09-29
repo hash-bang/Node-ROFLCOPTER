@@ -36,8 +36,19 @@ app.controller('pilotController', function($scope, Drone) {
 			});
 	};
 
+	$scope.altitude = function(direction, speed) {
+		Drone.altitude({
+			id: $scope.id,
+			direction: direction,
+			speed: speed
+		}).$promise
+			.then(function(data) {
+				$scope.status = 'Altitude ' + direction + ' @ ' + speed + ' completed';
+			});
+	};
+
 	$scope.rotate = function(direction, speed) {
-		Drone.action({
+		Drone.rotate({
 			id: $scope.id,
 			direction: direction,
 			speed: speed

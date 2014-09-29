@@ -1,4 +1,4 @@
-app.get('/api/actions/:id/takeoff', function(req, res) {
+app.get('/api/actions/takeoff/:id', function(req, res) {
 	drone.disableEmergency();
 	logger.log('Take off!');
 	drone.takeoff(function() {
@@ -7,12 +7,12 @@ app.get('/api/actions/:id/takeoff', function(req, res) {
 	});
 });
 
-app.get('/api/actions/:id/reset', function(req, res) {
+app.get('/api/actions/reset/:id', function(req, res) {
 	drone.disableEmergency();
 	res.send(200);
 });
 
-app.get('/api/actions/:id/land', function(req, res) {
+app.get('/api/actions/land/:id', function(req, res) {
 	logger.log('Land!');
 	drone.land(function() {
 		logger.info('Landed');
@@ -20,13 +20,13 @@ app.get('/api/actions/:id/land', function(req, res) {
 	});
 });
 
-app.get('/api/actions/:id/stop', function(req, res) {
+app.get('/api/actions/stop/:id', function(req, res) {
 	logger.log('Stop!');
 	drone.stop();
 	res.send(200);
 });
 
-app.get('/api/actions/altitude/:direction/:speed?', function(req, res) {
+app.get('/api/actions/altitude/:id/:direction/:speed?', function(req, res) {
 	var amount;
 	if (req.params.direction == 'up') {
 		amount = req.params.speed || config.drone.defaults.upSpeed;
@@ -43,7 +43,7 @@ app.get('/api/actions/altitude/:direction/:speed?', function(req, res) {
 	}
 });
 
-app.get('/api/actions/move/:direction/:speed?', function(req, res) {
+app.get('/api/actions/move/:id/:direction/:speed?', function(req, res) {
 	var amount;
 	if (req.params.direction == 'forward') {
 		amount = req.params.speed || config.drone.defaults.forwardSpeed;
@@ -70,7 +70,7 @@ app.get('/api/actions/move/:direction/:speed?', function(req, res) {
 	}
 });
 
-app.get('/api/actions/rotate/:direction/:speed?', function(req, res) {
+app.get('/api/actions/rotate/:id/:direction/:speed?', function(req, res) {
 	if (req.params.direction == 'clockwise') {
 		amount = req.params.speed || config.drone.defaults.clockwiseSpeed;
 		logger.info('Rotate clockwise', amount);
@@ -79,7 +79,7 @@ app.get('/api/actions/rotate/:direction/:speed?', function(req, res) {
 	} else if (req.params.direction == 'antiClockwise') {
 		amount = req.params.speed || config.drone.defaults.antiClockwiseSpeed;
 		logger.info('Rotate antiClockwise', amount);
-		drone.antiClockwise(amount);
+		drone.counterClockwise(amount);
 		res.send(200);
 	} else {
 		res.send(400, 'Unknown direction');

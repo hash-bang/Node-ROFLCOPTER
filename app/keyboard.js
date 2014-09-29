@@ -1,70 +1,64 @@
-key('w', function() {
+key('w, up, ', function() {
 	ngApply('pilotController', function($scope) {
 		$scope.move('forward');
 	});
 });
 
-key('s', function() {
+key('s, down', function() {
 	ngApply('pilotController', function($scope) {
 		$scope.move('backward');
 	});
 });
 
-key('a', function() {
+key('a, left', function() {
 	ngApply('pilotController', function($scope) {
 		$scope.move('left');
 	});
 });
 
-key('d', function() {
+key('d, right', function() {
 	ngApply('pilotController', function($scope) {
 		$scope.move('right');
 	});
 });
 
-key('q', function() {
+key('q, [', function() {
 	ngApply('pilotController', function($scope) {
 		$scope.rotate('antiClockwise');
 	});
 });
 
-key('e', function() {
+key('e, ]', function() {
 	ngApply('pilotController', function($scope) {
 		$scope.rotate('clockwise');
 	});
 });
 
-key('space', function() {
+key('space, ., end', function() {
 	ngApply('pilotController', function($scope) {
 		$scope.action('land');
 	});
 });
 
-key('p', function() {
+key('p, pageup', function() {
 	ngApply('pilotController', function($scope) {
 		$scope.altitude('up');
 	});
 });
 
-key('l', function() {
+key('l, pagedown', function() {
 	ngApply('pilotController', function($scope) {
 		$scope.altitude('down');
 	});
 });
 
-key('backspace', function() {
+key('backspace, r', function() {
 	ngApply('pilotController', function($scope) {
 		$scope.action('reset');
 	});
 });
 
-key('r', function() {
-	ngApply('pilotController', function($scope) {
-		$scope.action('reset');
-	});
-});
-
-key('escape', function() {
+key('escape, home', function() {
 	ngApply('pilotController', function($scope) {
 		$scope.action('stop');
 	});
