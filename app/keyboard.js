@@ -52,7 +52,13 @@ key('l', function() {
 	});
 });
 
-key(['backspace', 'r'], function() {
+key('backspace', function() {
+	ngApply('pilotController', function($scope) {
+		$scope.action('reset');
+	});
+});
+
+key('r', function() {
 	ngApply('pilotController', function($scope) {
 		$scope.action('reset');
 	});
