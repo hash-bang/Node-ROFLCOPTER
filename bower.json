@@ -1,0 +1,27 @@
+{
+  "name": "node-roflcopter",
+  "version": "0.1.0",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "angular": "~1.3.0",
+    "angular-google-maps": "~2.0.1",
+    "angular-resource": "~1.3.0",
+    "angular-route": "~1.3.0",
+    "bootstrap": "~3.2.0",
+    "fontawesome": "~4.2.0",
+    "jquery": "~2.1.1",
+    "jquery.scrollTo": "~1.4.13",
+    "keymaster": "~1.6.2",
+    "lodash": "~2.4.1",
+    "angular-xenophilous": "~1.3.0"
+  },
+  "resolutions": {
+    "angular-google-maps": "~2.0.1",
+    "angular-resource": "~1.3.0",
+    "angular-route": "~1.3.0",
+    "fontawesome": "~4.2.0",
+    "bootstrap": "~3.2.0",
+    "angular": "~1.3.0"
+  }
+}
